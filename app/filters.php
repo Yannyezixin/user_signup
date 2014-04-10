@@ -35,7 +35,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest('login');
+	if (Auth::guest()) return Redirect::guest(route('UserSignin'));
 });
 
 
@@ -55,8 +55,10 @@ Route::filter('auth.basic', function()
 |
 */
 
+#必须是游客
 Route::filter('guest', function()
 {
+    //拦截以登录的用户
 	if (Auth::check()) return Redirect::to('/');
 });
 
