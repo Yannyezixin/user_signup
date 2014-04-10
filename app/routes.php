@@ -15,3 +15,32 @@ Route::get('/', function()
 {
 	return View::make('hello');
 });
+
+/*
+|--------------------------------------------------------------------------
+|  基础权限
+|--------------------------------------------------------------------------
+*/
+Route::group(array('prefix' => 'auth'),function() {
+    $Authority = 'AuthorityController@';
+    #退出
+    Route::get('logout',array('as' => 'UserLogout','uses' => $Authority.'getLogout'));
+    Route::group(array('before' => 'guest'), function() use($Authority) {
+        #登录
+        Route::get('signin',array('as' => 'UserSignin', 'uses' => $Authority.'getSignin'));
+        Route::post('signin',$Authority.'postSignin');
+        #注册
+        Route::get('signup',array('as' => 'UserSignup', 'uses' => $Authority.'getSignup'));
+        Route::post('signup',$Authority.'postSignup');
+        #注册成功提示用户激活
+        Route::get('success/{email}',array('as' => 'UserSignupSuccess', 'uses' => $Authority.'getSignupSuccess'));
+        #激活帐号
+        Route::get('activate/{activationCode}',array('as' => 'UserActivate', 'uses' => $Authority.'getActivate'));
+        #忘记密码
+        Route::get('forgot-password',array('as' => 'UserForgotPassword', 'uses' => $Authority.'getForgotPassword'));
+        Route::post('forgot-password',$Authority.'postForgetPassword');
+        #密码重置
+        Route::get('forget-password/{token}',array('as' => 'UserReset', 'uses' => $Authority.'getReset'));
+        Route::post('forgot-password/{token}',$Authority.'postReset');
+    });
+});
