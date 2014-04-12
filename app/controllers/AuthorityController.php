@@ -9,6 +9,7 @@ class AuthorityController extends BaseController
      */
     public function getSignin()
     {
+        return View::make('authority.signin');
     }
 
     /**
@@ -27,6 +28,8 @@ class AuthorityController extends BaseController
      */
     public function getLogout()
     {
+        Auth::logout();
+        return Redirect::to('/');
     }
 
     /**
@@ -36,6 +39,7 @@ class AuthorityController extends BaseController
      */
     public function getSignup()
     {
+        return View::make('authority.signup');
     }
 
     /**
@@ -74,6 +78,7 @@ class AuthorityController extends BaseController
      */
     public function getForgotPassword()
     {
+        return View::make('authority.password.remind');
     }
 
     /**
