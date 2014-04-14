@@ -5,6 +5,7 @@
             @show
         </title>
 	    <link rel="stylesheet" type="text/css" href="{{{ URL::asset('static/css/bootstrap.css')}}}">
+       	    <script type="text/javascript" src="{{{ URL::asset('static/js/jquery.js')}}}"></script>
         <style type="text/css">
             @section('style')
             @show
@@ -16,4 +17,7 @@
         @section('end')
         @show
     </body>
+@section('scripts')
+<script type="text/javascript" src="{{{ URL::asset('static/js/bootstrap.js')}}}"></script>
+@show
 </html>
