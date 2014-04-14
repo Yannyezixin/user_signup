@@ -11,9 +11,11 @@
 |
 */
 
-Route::get('/', function()
-{
-	return View::make('hello');
+Route::group(array('prefix'=> '','before' => 'front'), function(){
+    $Users = 'UserController@';
+
+    #首页显示
+    Route::get('/',array('as' => 'FrontUserIndex','uses' => $Users.'getIndex'));
 });
 
 /*
