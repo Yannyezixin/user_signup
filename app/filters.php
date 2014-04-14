@@ -22,6 +22,18 @@ App::after(function($request, $response)
 	//
 });
 
+Route::filter('front',function()
+{
+    $users = Auth::user();
+    if(!Auth::guest()){
+        View::share(array(
+            'me' => Auth::user(),
+            'active' => '1'
+        ));
+    }
+
+    View::share('users',$users->get());
+});
 /*
 |--------------------------------------------------------------------------
 | Authentication Filters
@@ -35,7 +47,7 @@ App::after(function($request, $response)
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::guest(route('UserSignin'));
+	if (Auth::guest()) return Redirect::route('UserSignin');
 });
 
 
