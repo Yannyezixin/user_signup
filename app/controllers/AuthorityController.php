@@ -19,6 +19,20 @@ class AuthorityController extends BaseController
      */
     public function postSignin()
     {
+        //凭证
+        $credentials = array('email' => Input::get('email'),'password' => Input::get('password'));
+        //是否记住登录状态
+        $remember = Input::get('remember-me',0);
+        //验证登录
+        if(Auth::attempt($credentials,$remember)){
+            //登录成功，跳回之前拦截的页面
+            return Redirect::intended()->with('active','1');
+        }else{
+            //登录失败，调回
+            return Redirect::back()
+                ->withInput()
+                ->withErrors(array('attempt' => '“邮箱”或“密码”错误,请重新登录'));
+        }
     }
 
     /**
@@ -49,6 +63,56 @@ class AuthorityController extends BaseController
      */
     public function postSignup()
     {
+        //获取表单数据
+        $data = Input::all();
+        //创建验证规则
+        $rules = array(
+            'email' => 'required|email|unique:users',
+            'password' => 'required|alpha_dash|between:6,16|confirmed',
+        );
+        // 自定义验证消息
+        $messages = array(
+            'email.required' => '请输入邮箱地址。',
+            'email.email' => '请输入正确的邮箱地址。',
+            'email.unique' => '此邮箱已被使用',
+            'password.required' => '请输入密码',
+            'password.alpha_dash' => '密码格式不正确',
+            'password.between' => '密码长度保持在:min到:max之前',
+            'password.confirmed' => '两次密码输入不正确'
+        );
+        //开始验证
+        $validator = Validator::make($data,$rules,$messages);
+        if($validator->passes()){
+            //验证成功，添加用户
+            $user = new User;
+            $user->email = Input::get('email');
+            $user->password = Input::get('password');
+            if($user->save()){
+                //添加成功
+                //生成激活码
+                $activation = new Activation;
+                $activation->email = $user->email;
+                $activation->token = str_random(40);
+                $activation->save();
+                //发送激活邮件
+                $with = array('activationCode' => $activation->token);
+                Mail::send('authority.email.activation',$with,function ($message) use ($user){
+                    $message
+                        ->to($user->email)
+                        ->subject('YannUser 帐号激活邮件'); //标题
+                });
+                return Redirect::route('UserSignupSuccess',$user->email);
+            }else{
+                return Redirect::back()
+                    ->withInput()
+                    ->withErrors(array('add' => '注册失败'));
+            }
+        }else{
+            //验证失败，跳回
+            return Redirect::back()
+                ->withInput()
+                ->withErrors($validator);
+        }
     }
 
     /**
@@ -59,6 +123,7 @@ class AuthorityController extends BaseController
      */
     public function getSignupSuccess($email)
     {
+        phpinfo();
     }
 
     /**
