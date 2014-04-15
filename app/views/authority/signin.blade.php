@@ -48,12 +48,12 @@
         <input name="password" type="password" class="form-control" placeholder="密码" required>
         <label class="checkbox">
             <input type="checkbox" name="remember-me" value="1"> 记住我
-            <a href="{{ route('UserForgotPassword') }}" style="float:right;">忘记密码 &gt;&gt;&gt;</a>
+            <a href="{{ route('UserForgotPassword') }}" style="float:right;">忘记密码</a>
         </label>
         <div class="alert alert-warning alert-dismissable {{ $errors->first('attempt')?'':'hidden'; }}">
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
             <strong>{{ $errors->first('attempt') }}</strong>
         </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">登 录</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">登 录</button>
     {{ Form::close() }}
 @stop

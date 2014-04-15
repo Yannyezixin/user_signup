@@ -1,4 +1,4 @@
-@extends('l.authority', array('active' => 'signin'))
+@extends('l.authority')
 
 @section('title') 忘记密码 @parent @stop
 
@@ -27,7 +27,7 @@
         <div class="input-group">
             <input type="text" class="form-control input-lg" name="email" placeholder="请填写您注册时所使用的邮箱">
             <span class="input-group-btn">
-                <button class="btn btn-lg btn-primary" type="submit" style="width:9em;">发 送</button>
+                <button class="btn btn-lg btn-success" type="submit" style="width:9em;">发 送</button>
             </span>
         </div><!-- /input-group -->
         @if( Session::get('error') )

@@ -1,4 +1,4 @@
-@extends('l.base')
+@extends('Front.Index')
 
 @section('title') 用户 @parent @stop
 

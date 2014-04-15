@@ -5,7 +5,7 @@
       <span class="sr-only">Toggle navigation</span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">YannUser</a>
+    <a class="navbar-brand" href="{{ URL::route('FrontUserIndex')}}">YannUser</a>
   </div>
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -20,8 +20,8 @@
           <li><a href="{{ URL::route('UserLogout')}}">退出登录</a></li>
         </ul>
     	@else
-        <li><a href="{{ URL::route('UserSignin')}}" >Signin</a></li>
-        <li><a href="{{ URL::route('UserSignup')}}">Signup</a></li>
+        <li><a href="{{ URL::route('UserSignin')}}" >登录</a></li>
+        <li><a href="{{ URL::route('UserSignup')}}">注册</a></li>
         @endif
       </li>
      </ul>
