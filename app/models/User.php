@@ -47,6 +47,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 	public function getReminderEmail()
 	{
 		return $this->email;
-	}
+    }
+
+    /**
+     *  调整器：密码
+     *  @param string $value 未处理的密码字符串
+     *
+     *  @return void
+     */
+    public function setPasswordAttribute($value)
+    {
+        //若传入的值已经进行Hash 加密，则不重复处理
+        $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
+    }
 
 }
