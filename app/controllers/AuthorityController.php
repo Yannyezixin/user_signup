@@ -123,7 +123,12 @@ class AuthorityController extends BaseController
      */
     public function getSignupSuccess($email)
     {
-        phpinfo();
+        //确认是否存在此未激活的邮箱
+        $activation = Activation::whereRaw("email = '{$email}'")->first();
+        //数据库中无邮箱，抛出404
+        is_null($activation) AND App::abort(404);
+        //提示激活
+        return View::make('authority.signupSuccess')->with('email',$email);
     }
 
     /**
@@ -134,6 +139,19 @@ class AuthorityController extends BaseController
      */
     public function getActivate($activationCode)
     {
+        //数据库验证令牌
+        $activation = Activation::where('token',$activationCode)->first();
+        //数据库中无令牌，抛出404
+        is_null($activation) AND App::abort(404);
+        //数据库中有令牌
+        //激活用户
+        $user = User::where('email',$activation->email)->first();
+        $user->activated_at = new Carbon;
+        $user->save();
+        //删除令牌
+        $activation->delete();
+        //激活成功提示
+        return View::make('authority.activationSuccess');
     }
 
     /**
@@ -153,6 +171,19 @@ class AuthorityController extends BaseController
      */
     public function postForgotPassword()
     {
+        //调用系统提供的类
+        $response = Password::remind(Input::only('email'),function($m,$user,$token){
+            $m->subject('YannUser --密码重置邮箱');
+        });
+        //检测邮箱并发送密码重置邮件
+        switch($response){
+            //邮件未发送，返回错误信息
+            case Password::INVALID_USER:
+                return Redirect::back()->with('error',Lang::get($response));
+            //邮件发送成功，返回正确信息
+            case Password::REMINDER_SENT:
+                return Redirect::back()->with('status',Lang::get($response));
+        }
     }
 
     /**
@@ -162,6 +193,9 @@ class AuthorityController extends BaseController
      */
     public function getReset($token)
     {
+        //数据库中无令牌，抛出404
+        is_null(PasswordReminder::where('token', $token)->first()) AND App::abort(404);
+        return View::make('authority.password.reset')->with('token',$token);
     }
 
     /**
@@ -171,5 +205,28 @@ class AuthorityController extends BaseController
      */
     public function postReset()
     {
+        //调用系统自带密码重置流程
+        $credentials = Input::only(
+            'email', 'password', 'password_confirmation', 'token'
+        );
+
+        $response = Password::reset($credentials,function($user,$password){
+            //保存新密码
+            $user->password = $password;
+            $user->save();
+            //登录用户
+            Auth::login($user);
+        });
+
+         switch ($response) {
+            case Password::INVALID_PASSWORD:
+                //NO BREAK
+            case Password::INVALID_TOKEN:
+                //NO BEAKE
+            case Password::INVALID_USER:
+                return Redirect::back()->with('error',Lang::get($response));
+            case Password::PASSWORD_RESET:
+                return Redirect::to('/');
+         }
     }
 }
