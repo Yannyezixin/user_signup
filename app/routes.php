@@ -40,9 +40,9 @@ Route::group(array('prefix' => 'auth'),function() {
         Route::get('activate/{activationCode}',array('as' => 'UserActivate', 'uses' => $Authority.'getActivate'));
         #忘记密码
         Route::get('forgot-password',array('as' => 'UserForgotPassword', 'uses' => $Authority.'getForgotPassword'));
-        Route::post('forgot-password',$Authority.'postForgetPassword');
+        Route::post('forgot-password',$Authority.'postForgotPassword');
         #密码重置
-        Route::get('forget-password/{token}',array('as' => 'UserReset', 'uses' => $Authority.'getReset'));
+        Route::get('forgot-password/{token}',array('as' => 'UserReset', 'uses' => $Authority.'getReset'));
         Route::post('forgot-password/{token}',$Authority.'postReset');
     });
 });
