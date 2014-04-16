@@ -38,27 +38,30 @@
 
 @section('container')
 
-    {{ Form::open(array('class' => 'form-signup', 'role' => 'form')) }}
+    {{ Form::open(array('class' => 'form-signup', 'role' => 'form','onsubmit'=> 'return comfired()')) }}
         <h2 class="form-signup-heading">用户注册</h2>
-        <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="邮箱" required autofocus>
+        <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" id="email" placeholder="邮箱" required autofocus>
         {{ $errors->first('email', '<strong class="error">:message</strong>') }}
+        <strong  id="error1"></strong>
         <div class="input-group">
-            <input name="password" type="password" class="form-control" placeholder="密码" required>
+            <input name="password" type="password" class="form-control" placeholder="密码"  id="password" required>
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" data-toggle="popover" data-content="请使用字母、数字、下划线、中划线。长度在6-16位之间。">?</button>
             </span>
         </div>
+        <strong  id="error"></strong>
         {{ $errors->first('password', '<strong class="error">:message</strong>') }}
-        <input name="password_confirmation" type="password" class="form-control" placeholder="确认密码" required>
-        <button class="btn btn-lg btn-success btn-block" type="submit">注 册</button>
+        <input name="password_confirmation" type="password" class="form-control" placeholder="确认密码" id="comfiredpassword"  required>
+        <strong  id="error2"></strong>
+        <button class="btn btn-lg btn-success btn-block" type="submit" id="submit" >注 册</button>
     {{ Form::close() }}
 
 @stop
 
 
-@section('end')
+@section('scripts')
     @parent
     <script>
-        $('[data-toggle]').popover({container:'body'});
+	$('[data-toggle]').popover({container:'body'});
     </script>
 @stop

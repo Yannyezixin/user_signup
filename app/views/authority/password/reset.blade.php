@@ -38,18 +38,21 @@
 
 @section('container')
 
-    {{ Form::open(array('class' => 'form-register', 'role' => 'form')) }}
+    {{ Form::open(array('class' => 'form-register', 'role' => 'form','onsubmit' => 'return comfired()')) }}
         <h2 class="form-register-heading">密码重置</h2>
-        <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" placeholder="请输入您注册时所使用的邮箱" required autofocus>
+        <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" id="email" placeholder="请输入您注册时所使用的邮箱" required autofocus>
         {{ $errors->first('email', '<strong class="error">:message</strong>') }}
+	        <strong  id="error1"></strong>
         <div class="input-group">
-            <input name="password" type="password" class="form-control" placeholder="密码" required>
+            <input name="password" type="password" class="form-control" placeholder="密码" id="password" required>
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" data-toggle="popover" data-content="请使用字母、数字、下划线、中划线。长度在6-16位之间。">?</button>
             </span>
         </div>
         {{ $errors->first('password', '<strong class="error">:message</strong>') }}
-        <input name="password_confirmation" type="password" class="form-control" placeholder="确认密码" required>
+	        <strong  id="error"></strong>
+        <input name="password_confirmation" type="password" class="form-control" placeholder="确认密码" id="comfiredpassword" required>
+	        <strong  id="error2"></strong>
         <input type="hidden" name="token" value="{{ $token }}">
         @if( Session::get('error') )
         <div class="alert alert-warning alert-dismissable">
@@ -57,12 +60,12 @@
             <strong>{{ Session::get('error') }}</strong>
         </div>
         @endif
-        <button class="btn btn-lg btn-danger btn-block" type="submit">重 置</button>
+        <button class="btn btn-lg btn-success btn-block" type="submit">重 置</button>
     {{ Form::close() }}
 
 @stop
 
-@section('end')
+@section('scripts')
     @parent
     <script>
         $('[data-toggle]').popover({container:'body'});

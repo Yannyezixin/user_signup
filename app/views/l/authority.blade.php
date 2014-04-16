@@ -18,6 +18,11 @@ body
 
 @stop
 
+@section('scripts')
+ @parent
+ <script src="{{ URL::asset('static/js/authority.js')}}"></script>
+@stop
+
 @section('end')
 
 @parent @stop
