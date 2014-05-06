@@ -24,7 +24,7 @@ App::after(function($request, $response)
 
 Route::filter('front',function()
 {
-    $users = Auth::user();
+    $users = User::all();
     if(!Auth::guest()){
         View::share(array(
             'me' => Auth::user(),
@@ -32,7 +32,7 @@ Route::filter('front',function()
         ));
     }
 
-    View::share('users',$users->get());
+    View::share('users',$users);
 });
 /*
 |--------------------------------------------------------------------------

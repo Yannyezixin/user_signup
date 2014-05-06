@@ -15,7 +15,7 @@
     	@if(isset($active))
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">用户名<b class="caret"></b></a>
         <ul class="dropdown-menu">
-          <li><a href="#">账户设置</a></li>
+          <li><a href="{{ URL::route('account')}}">账户设置</a></li>
           <li class="divider"></li>
           <li><a href="{{ URL::route('UserLogout')}}">退出登录</a></li>
         </ul>

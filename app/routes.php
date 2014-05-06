@@ -46,3 +46,23 @@ Route::group(array('prefix' => 'auth'),function() {
         Route::post('forgot-password/{token}',$Authority.'postReset');
     });
 });
+
+/*
+|-------------------------------------------------------------------------
+| 用户中心
+|-------------------------------------------------------------------------
+ */
+Route::group(array('prefix' => 'account','before' => 'auth'),function () {
+    $Account = 'AccountController@';
+    # 用户中心首页
+    Route::get('/', array('as' => 'account', 'uses' => $Account.'getIndex'));
+    # 修改当前账号密码
+    Route::get('change-password', array('as' => 'account.changePassword', 'uses' => $Account.'getChangePassword'));
+    Route::put('change-password', $Account.'putChangePassword');
+    # 更改头像
+    Route::get('change-portrait', array('as' => 'account.changePortrait', 'uses' => $Account.'getChangePortrait'));
+    Route::put('change-portrait', $Account.'putChangePortrait');
+    # 我的评论管理
+    Route::get('my-comments', array('as' => 'account.myComments', 'uses' => $Account.'getMyComments'));
+    Route::delete('my-comments/{id}', array('as' => 'account.myComments.destroy', 'uses' => $Account.'deleteMyComment'));
+});
