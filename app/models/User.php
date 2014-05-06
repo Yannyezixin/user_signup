@@ -61,4 +61,18 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $this->attributes['password'] = Hash::needsRehash($value) ? Hash::make($value) : $value;
     }
 
+    public function getRememberToken()
+    {
+        return null;
+    }
+
+    public function setRememberToken($value)
+    {
+        return;
+    }
+
+    public function getRememberTokenName()
+    {
+        return null;
+    }
 }
