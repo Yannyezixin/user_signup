@@ -13,6 +13,46 @@ class AccountController extends BaseController
     }
 
     /**
+     * 动作：修改用户个人信息
+     *
+     * @return Response
+     */
+    public function postAccount()
+    {
+        //获取表单数据
+        $data = Input::all();
+        //创建验证规则
+        $rules = array(
+            'name' => 'required|between:2,20',
+        );
+        //自定义验证消息
+        $messages = array(
+            'name.required' => '请输入昵称',
+            'name.between' => '昵称长度请保持在:min到:max之间'
+        );
+        //开始验证
+        $validator = Validator::make($data, $rules, $messages);
+        if($validator->passes()) {
+            $user = Auth::user();
+            $user->name = Input::get('name');
+            $user->sex = Input::get('sex');
+            $user->date = Input::get('date');
+            $user->address = Input::get('address');
+            $user->url = Input::get('url');
+            $user->introduce = Input::get('introduce');
+            if ($user->save()) {
+                return Redirect::back()
+                    ->with('success','更新成功');
+            } else {
+                return Redirect::back()
+                    ->with('error','用户个人信息更新失败，请稍后再试');
+            }
+        } else {
+            return Redirect::back() -> withInput() -> withErrors($validator);
+        }
+    }
+
+    /**
      * 页面：修改当前帐号密码
      *
      * @return Response
@@ -53,13 +93,15 @@ class AccountController extends BaseController
             $user->password = $data['password'];
             if($user->save()){
                 //更新成功
-                return Redirect::back()
-                    ->with('success','密码修改成功');
+                Auth::logout();
+                return Redirect::route('UserSignin')
+                    ->withInput()
+                    ->with('success','密码修改成功,请重新登录');
             } else {
                 //更新失败
                 return Redirect::back()
                     ->withInput()
-                    ->with('error','密码重置成功');
+                    ->with('error','密码重置失败');
             }
         } else {
                 // 验证失败，跳回

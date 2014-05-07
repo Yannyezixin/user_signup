@@ -8,7 +8,7 @@ $is_active = function ($name = '') use ($active) {
 ?>
 
 <!-- Fixed navbar -->
-<div class="navbar navbar-default " role="navigation"
+<!--<div class="navbar navbar-default " role="navigation"
    >
     <div class="container">
         <div class="navbar-header">
@@ -32,15 +32,18 @@ $is_active = function ($name = '') use ($active) {
                         <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu">
-                        @if(Auth::user()->is_admin)
-                        <li><a href="">进入后台</a></li>
-                        @endif
                         <li><a href="{{ route('FrontUserIndex')}}">回到YannUser</a></li>
                         <li class="divider"></li>
                         <li><a href="{{ route('UserLogout')}}">退出</a></li>
                     </ul>
                 </li>
             </ul>
-        </div><!--/.nav-collapse -->
+        </div><!--/.nav-collapse --
     </div>
-</div>
+</div>-->
+     <div class="col-md-2">
+      <ul class="nav nav-pills nav-stacked ">
+        <li {{ $is_active('account')}}><a href="{{ route('account')}}">我的个人资料</a></li>
+        <li {{ $is_active('changePassword')}}><a href="{{ route('account.changePassword') }}">密码与绑定帐号</a></li>
+      </ul>
+     </div>

@@ -68,6 +68,7 @@ class AuthorityController extends BaseController
         //创建验证规则
         $rules = array(
             'email' => 'required|email|unique:users',
+            'name' => 'required|between:2,30',
             'password' => 'required|alpha_dash|between:6,16|confirmed',
         );
         // 自定义验证消息
@@ -75,9 +76,11 @@ class AuthorityController extends BaseController
             'email.required' => '请输入邮箱地址。',
             'email.email' => '请输入正确的邮箱地址。',
             'email.unique' => '此邮箱已被使用',
+            'name.required' => '请输入昵称',
+            'name.between' => '昵称长度保持在:min到:max之间',
             'password.required' => '请输入密码',
             'password.alpha_dash' => '密码格式不正确',
-            'password.between' => '密码长度保持在:min到:max之前',
+            'password.between' => '密码长度保持在:min到:max之间',
             'password.confirmed' => '两次密码输入不正确'
         );
         //开始验证
@@ -87,6 +90,8 @@ class AuthorityController extends BaseController
             $user = new User;
             $user->email = Input::get('email');
             $user->password = Input::get('password');
+            $user->name = Input::get('name');
+            $user->sex = 'sex-none';
             if($user->save()){
                 //添加成功
                 //生成激活码

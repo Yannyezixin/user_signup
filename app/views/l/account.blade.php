@@ -3,19 +3,16 @@
 @section('title') 用户中心 @parent @stop
 
 @section('style')
-body
-{
-    padding-bottom: 0;
-    background-color: #f3f3ff;
-}
+
 @parent @stop
 
 @section('body')
 
-    @include('Model.accountNavbar')
+    @include('Model.nav')
 
-    <div class="container panel" style="margin-top:5em; padding-bottom:1em;">
+    <div class="container">
         @yield('container')
+    @include('Model.accountNavbar')
     </div>
 
 @stop

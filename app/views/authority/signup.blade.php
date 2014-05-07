@@ -43,6 +43,9 @@
         <input name="email" value="{{ Input::old('email') }}" type="text" class="form-control" id="email" placeholder="邮箱" required autofocus>
         {{ $errors->first('email', '<strong class="error">:message</strong>') }}
         <strong  id="error1"></strong>
+        <input name="name" type="text" class="form-control" placeholder="昵称" id="name" required>
+        <strong  id="error3"></strong>
+        {{ $errors->first('name', '<strong class="error">:message</strong>') }}
         <div class="input-group">
             <input name="password" type="password" class="form-control" placeholder="密码"  id="password" required>
             <span class="input-group-btn">
